@@ -1,0 +1,16 @@
+def get_first_dir(i_path):
+    """
+    Returns the first directory in a path
+
+    i_path (str): either empty or it is a '/'
+    followed by a directory name followed by
+    an optional path (which meets the same
+    criteria as i_path)
+    return (str): the first directory in the
+    path, or NULL if the path is empty
+    """
+
+    if not i_path:
+        return None
+
+    
