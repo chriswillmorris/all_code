@@ -1,26 +1,89 @@
+import logger
+
 class ProblemSolver(object):
-    def __init__(self):
-        pass
+
+    def __init__(self, i_in_file, o_out_file, i_debug, o_debug_file=None):
+        assert i_in_file
+        self._in_file = open(i_in_file, 'r')
+
+        assert o_out_file
+        self._out_file = open(o_out_file, 'w')
+
+        if (o_debug_file):
+            self._debug_file = open(o_debug_file, 'w')
+        else:
+            self._debug_file = None
+
+        self._debug = i_debug
 
 
-    def solve(self, i_in_file, o_out_file, o_debug_file, i_expected_answers):
+    def solve(self, i_expected_answers=None):
         """
-        i_in_file (str) : the name of the input file
-        o_out_file (str) : the name of the file where
-        the output will be written
-        o_debug_file (str) : the name of the file where
-        the debug information will be written
+        Solves the supplies problems and compares them
+        to a set of expected answers
+
         i_expected_answers (iterable) : an iterable
         that contains the list of expected answers to
         compare against
         """
 
-        in_file = open(i_in_file, 'r')
+        num_cases = int(self._in_file.readline())
+        
+        logger.log("{num} cases".format(num= num_cases), self._debug, self._debug_file)
 
-        num_cases = int(in_file.readline())
+        num_expected_answers = len(i_expected_answers) if i_expected_answers else 0
 
-        print num_cases
+        num_to_test = num_cases
+        if (num_expected_answers > 0) and (num_expected_answers < num_cases):
+            # Only use num_expected_answers if it is a
+            # valid number
+            num_to_test = num_expected_answers
 
-        num_expected_answers = len(i_expected_answers)
+        for i in range(num_to_test):
+            self.get_case_input()
+            logger.log("Case {case_num}".format(case_num=i), i_force=True, o_log_file=self._debug_file)
+            outputs = self.solve_case()
 
-        in_file.close()
+            # Write output to a file. Handle case where outputs
+            # is not iterable
+            try:
+                self._out_file.write(outputs[0])
+            except TypeError:
+                self._out_file.write(outputs)
+
+            if i_expected_answers:
+                # Compare generated output with expected output
+                if i_expected_answers[i] != outputs[0]:
+                    logger.log("Failed", i_force=True, o_log_file=self._debug_file)
+                    logger.log("Expected: {0}".format(i_expected_answers[i]), i_force=True, o_log_file=self._debug_file)
+                    logger.log("Calculated: {0}".format(outputs[0]), i_force=True, o_log_file=self._debug_file)
+
+        self._out_file.close()
+        self._in_file.close()
+        if self._debug_file:
+            self._debug_file.close()
+
+
+    def get_case_input(self):
+        """
+        Populates the child class' parameters based on the
+        input file.
+
+        i_in_file (file) : An already opened file that
+        points to the beginning of a test case.
+        """
+        pass
+
+
+
+    def solve_case(self):
+        """
+        Solves a given case (this assumes the inputs for
+        the case are already filled in)
+
+        Return : A tuple of output where the first element
+        is the actualy output required by the problem statement
+        and the rest of the output is used for debugging
+        purposes
+        """
+        pass
