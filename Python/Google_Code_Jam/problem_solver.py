@@ -39,29 +39,47 @@ class ProblemSolver(object):
             # valid number
             num_to_test = num_expected_answers
 
+        self._init()
+
         for i in range(num_to_test):
             self.get_case_input()
-            logger.log("Case {case_num}".format(case_num=i), i_force=True, o_log_file=self._debug_file)
+
+            # TODO: Temporary, to limit execution
+            #if (i != 20):
+            #if (i < 3) or (i > 6):
+            #    continue
+
+            case_stmt = "Case #{case_num}: ".format(case_num=i+1) 
+            logger.log(case_stmt, i_force=True, o_log_file=self._debug_file)
+            self._out_file.write(case_stmt)
+
             outputs = self.solve_case()
 
             # Write output to a file. Handle case where outputs
             # is not iterable
             try:
-                self._out_file.write(outputs[0])
+                output = outputs[0]
             except TypeError:
-                self._out_file.write(outputs)
+                output = outputs
+
+            logger.log(output, i_force=True, o_log_file=self._debug_file)
+            self._out_file.write(str(output) + '\n')
 
             if i_expected_answers:
                 # Compare generated output with expected output
-                if i_expected_answers[i] != outputs[0]:
+                if i_expected_answers[i] != output:
                     logger.log("Failed", i_force=True, o_log_file=self._debug_file)
                     logger.log("Expected: {0}".format(i_expected_answers[i]), i_force=True, o_log_file=self._debug_file)
-                    logger.log("Calculated: {0}".format(outputs[0]), i_force=True, o_log_file=self._debug_file)
+                    logger.log("Calculated: {0}".format(output), i_force=True, o_log_file=self._debug_file)
+
+        self._cleanup()
 
         self._out_file.close()
         self._in_file.close()
         if self._debug_file:
             self._debug_file.close()
+
+
 
 
     def get_case_input(self):
@@ -85,5 +103,19 @@ class ProblemSolver(object):
         is the actualy output required by the problem statement
         and the rest of the output is used for debugging
         purposes
+        """
+        pass
+
+
+    def _cleanup(self):
+        """
+        Performs necessary cleanup
+        """
+        pass
+
+
+    def _init(self):
+        """
+        Performs necessary initialization
         """
         pass
