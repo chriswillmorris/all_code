@@ -1,12 +1,11 @@
 100 cases
 Loading winners and losers from disk
-Case #1: 
+Case 0
 a1:5, a2:5, b1:8, b2:8
-add L: (5, 8)
-0
-Case #2: 
-a1:11, a2:11, b1:2, b2:2
-add W: (11, 2)
+state already lost: (1, 0)
+state already lost: (1, 0)
+add L: (1, 1)
+)
 1
 Case #3: 
 a1:1, a2:6, b1:1, b2:6
