@@ -45,9 +45,9 @@ class ProblemSolver(object):
             self.get_case_input()
 
             # TODO: Temporary, to limit execution
-            #if (i != 2):
+            if (i != 49):
             #if (i < 3) or (i > 6):
-                #continue
+                continue
 
             case_stmt = "Case #{case_num}: ".format(case_num=i+1) 
             logger.log(case_stmt, i_force=True, o_log_file=self._debug_file)
@@ -117,13 +117,5 @@ class ProblemSolver(object):
     def _init(self):
         """
         Performs necessary initialization
-        """
-        pass
-
-
-
-    def _reset_input_vars(self):
-        """
-        Resets input vars for the new case to be processed
         """
         pass
