@@ -1,20 +1,23 @@
 import logger
 
+import os
+
+
+
 class ProblemSolver(object):
 
-    def __init__(self, i_in_file, o_out_file, i_debug, o_debug_file=None):
-        assert i_in_file
-        self._in_file = open(i_in_file, 'r')
+    def __init__(self, i_base_path_name, i_base_file_name, i_debug, i_force_printing):
+        assert i_base_path_name
+        assert i_base_file_name
+        incomplete_file_name = os.path.join(i_base_path_name, i_base_file_name)
 
-        assert o_out_file
-        self._out_file = open(o_out_file, 'w')
-
-        if (o_debug_file):
-            self._debug_file = open(o_debug_file, 'w')
-        else:
-            self._debug_file = None
+        self._in_file = open(incomplete_file_name + '.in', 'r')
+        self._out_file = open(incomplete_file_name + '.out', 'w')
+        self._debug_file = open(incomplete_file_name + '.debug', 'w')
 
         self._debug = i_debug
+
+        self._force_printing = i_force_printing
 
 
     def solve(self, i_expected_answers=None):
@@ -53,14 +56,9 @@ class ProblemSolver(object):
             logger.log(case_stmt, i_force=True, o_log_file=self._debug_file)
             self._out_file.write(case_stmt)
 
-            outputs = self.solve_case()
+            output = self.solve_case()
 
-            # Write output to a file. Handle case where outputs
-            # is not iterable
-            try:
-                output = outputs[0]
-            except TypeError:
-                output = outputs
+            # Write output to a file.
 
             logger.log(output, i_force=True, o_log_file=self._debug_file)
             self._out_file.write(str(output) + '\n')

@@ -41,18 +41,18 @@ def download_file(i_url, i_dir_name, o_log_file):
             logger.log(sys.exc_info(), True, o_log_file)
 
 
-def main(argv):
+def download_photos(i_username, i_password, i_dir):
     """
-    argv[0] - username
-    argv[1] - password
-    argv[2] - directory to put photos in
+    i_username - username
+    i_password - password
+    i_dir - directory to put photos in
     """
 
     log_file = None
     log_file = open('download_photos_log.txt','w')
 
     # Log in
-    client = google_utils.picasa.login(argv[0],argv[1])
+    client = google_utils.picasa.login(i_username, i_password)
     if not client:
         logger.log("Picasa login failed", True, log_file)
         return
@@ -73,7 +73,7 @@ def main(argv):
         album_title = album_title.replace("'","")
         album_title = album_title.replace('w/','with')
 
-        album_dir = os.path.join(argv[2], album_title)
+        album_dir = os.path.join(i_dir, album_title)
 
         if not os.path.isdir(album_dir) :
             # Directory does not exist. Make it
@@ -107,5 +107,5 @@ if __name__ == '__main__':
     """
 
     print "Starting to download Picasa photos"
-    main(sys.argv[1:])
+    main(sys.argv[1], sys.argv[2], sys.argv[3])
     print "Done dowloading Picasa photos"
