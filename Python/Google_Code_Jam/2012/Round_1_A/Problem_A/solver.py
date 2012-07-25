@@ -19,18 +19,18 @@ class Solver(gcj_solver.ProblemSolver):
 
     
     def __init__(self):
-        base_path = "/home/chris/all_code/Python/Google_Code_Jam/2012/Round_1_A/Problem_A"
+        base_path = "C:\\Users\\cmorris\\Documents\\Projects\\github_repo\\all_code\\Python\\Google_Code_Jam\\2012\\Round_1_A\\Problem_A"
         
         fname = 'B-small-attempt0'
         fname = 'B-large'
+        fname = 'test'
 
         gcj_solver.ProblemSolver.__init__(self, base_path, fname, True, False)
 
         # Problem parameters
-        self._N = None
-        self._S = None
-        self._p = None
-        self._pts = None
+        self._A = None
+        self._B = None
+        self._probs = None
 
                        
     def get_case_input(self):
@@ -41,14 +41,15 @@ class Solver(gcj_solver.ProblemSolver):
         self._reset_input_vars()
 
         first_line = self._in_file.readline().strip()
-        inputs = first_line.split(' ')
-        self._N = int(inputs[0])
-        self._S = int(inputs[1])
-        self._p = int(inputs[2])
+        first_line = first_line.split(' ')
+        #print "first line", first_line
+        self._A = int(first_line[0])
+        self._B = int(first_line[1])
 
-        self._pts = []
-        for total_score in inputs[3:]:
-            self._pts.append(total_score)
+        second_line = self._in_file.readline().strip().split(' ')
+        #print "second line", second_line
+        self._probs = [float(x) for x in second_line]
+
 
 
     def _reset_input_vars(self):
@@ -64,23 +65,9 @@ class Solver(gcj_solver.ProblemSolver):
 
 
     def solve_case(self):
-        logger.log("N:{N}, S:{S}, p:{p}, pts:{pts}".format(N=self._N,S=self._S,p=self._p,pts=self._pts), i_force=True, o_log_file=self._debug_file)
+        logger.log("A:{A}, B:{B}, probs:{probs}".format(A=self._A,B=self._B,probs=self._probs), i_force=True, o_log_file=self._debug_file)
 
-        no_surprise = self._p + (2 * max(self._p - 1, 0))
-        surprise = self._p + (2 * max(self._p - 2, 0))
-
-        num_surprises_counted = 0
-
-        num_qualified = 0
-        for tot_score in self._pts:
-            tot_score = int(tot_score)
-            if tot_score >= no_surprise:
-                num_qualified += 1
-            elif (num_surprises_counted < self._S) and (tot_score >= surprise):
-                num_qualified += 1
-                num_surprises_counted +=1
-                
-        return num_qualified
+        return None
     
 
 

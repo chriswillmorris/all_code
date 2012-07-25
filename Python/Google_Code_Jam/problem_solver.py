@@ -20,6 +20,18 @@ class ProblemSolver(object):
         self._force_printing = i_force_printing
 
 
+    def log(self, i_str):
+        """
+        Logs some text using the following variables:
+        - self._debug
+        - self._debug_file
+        - self._force_printing
+
+        i_str (str) : The string to log
+        """
+        logger.log(i_str, i_debug=self._debug, i_force=self._force_printing, o_log_file=self._debug_file)
+
+
     def solve(self, i_expected_answers=None):
         """
         Solves the supplies problems and compares them
@@ -48,9 +60,9 @@ class ProblemSolver(object):
             self.get_case_input()
 
             # TODO: Temporary, to limit execution
-            #if (i != 49):
-            #if (i < 3) or (i > 6):
-                #continue
+            if (i != 4):
+            #if i > 2:
+                continue
 
             case_stmt = "Case #{case_num}: ".format(case_num=i+1) 
             logger.log(case_stmt, i_force=True, o_log_file=self._debug_file)
